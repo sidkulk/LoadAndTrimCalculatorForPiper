@@ -10,6 +10,7 @@ import io.sidkulk.view.helper.AircraftList;
 import io.sidkulk.view.helper.LoadAndTrimCalculations;
 
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JComboBox;
@@ -558,7 +559,7 @@ public class LoadAndTrimPage extends JFrame {
 				try {
 					acBasicEmptyWeight = Double.parseDouble(acEmptyWeightTxt.getText());
 				} catch (NumberFormatException e1) {
-					// TODO Auto-generated catch block
+					JOptionPane.showMessageDialog(null, "Select an Aircraft!", "Error", JOptionPane.ERROR_MESSAGE);
 					e1.printStackTrace();
 				}
 				double fuelWeightValue = 0.0;
@@ -571,14 +572,13 @@ public class LoadAndTrimPage extends JFrame {
 				try {
 					String rampFuelWeight = acFuelWeightTxt.getText();
 					fuelWeightValue = Double.parseDouble(rampFuelWeight);
-					weightSum = weightSum + (fuelWeightValue * 0.84);
+					weightSum = weightSum + LoadAndTrimCalculations.getFuelWeightValue(fuelWeightValue);
 					String acFuelArm = acFuelArmTxt.getText();
-					if (rampFuelWeight.isEmpty()) {
-						// TODO error dialogbox
+					if (rampFuelWeight.isBlank()) {
 						throw new IllegalStateException("Fuel Field left blank!");
 					} else {
-						rampFuelMoment = Double.parseDouble(rampFuelWeight) * Double.parseDouble(acFuelArm) * 0.84;
-						rampFuelMoment = LoadAndTrimCalculations.getFormattedValue(rampFuelMoment);
+						rampFuelMoment = LoadAndTrimCalculations.getRampFuelMoment(Double.parseDouble(rampFuelWeight),
+								Double.parseDouble(acFuelArm));
 						momentSum += rampFuelMoment;
 						acFuelMomentTxt.setText(Double.toString(rampFuelMoment));
 					}
@@ -588,10 +588,10 @@ public class LoadAndTrimPage extends JFrame {
 					weightSum += picWeightValue;
 					String picArm = picArmtxt.getText();
 					if (picWeight.isEmpty()) {
-						// TODO error dialogbox
 						throw new IllegalStateException("Pilot in Command Field left blank!");
 					} else {
-						picMoment = Double.parseDouble(picWeight) * Double.parseDouble(picArm);
+						picMoment = LoadAndTrimCalculations.getPicMoment(Double.parseDouble(picWeight),
+								Double.parseDouble(picArm));
 						momentSum += picMoment;
 						picMomentTxt.setText(Double.toString(picMoment));
 					}
@@ -601,10 +601,10 @@ public class LoadAndTrimPage extends JFrame {
 					weightSum += copWeightValue;
 					String copArm = copArmTxt.getText();
 					if (copWeight.isEmpty()) {
-						// TODO error dialogbox
 						throw new IllegalStateException("Co-Pilot/Observer Field left blank!");
 					} else {
-						copMoment = Double.parseDouble(copWeight) * Double.parseDouble(copArm);
+						copMoment = LoadAndTrimCalculations.getCopMoment(Double.parseDouble(copWeight),
+								Double.parseDouble(copArm));
 						momentSum += copMoment;
 						copMomentTxt.setText(Double.toString(copMoment));
 					}
@@ -614,10 +614,10 @@ public class LoadAndTrimPage extends JFrame {
 					weightSum += rearPaxLHWeightValue;
 					String rearPaxLHArm = rearLHPaxArmTxt.getText();
 					if (rearPaxLHWeight.isEmpty()) {
-						// TODO error dialogbox
 						throw new IllegalStateException("Rear LH Pax Field left blank!");
 					} else {
-						rearPaxLHMoment = Double.parseDouble(rearPaxLHWeight) * Double.parseDouble(rearPaxLHArm);
+						rearPaxLHMoment = LoadAndTrimCalculations.getRearPaxLHMoment(
+								Double.parseDouble(rearPaxLHWeight), Double.parseDouble(rearPaxLHArm));
 						momentSum += rearPaxLHMoment;
 						rearLHPaxMomentTxt.setText(Double.toString(rearPaxLHMoment));
 					}
@@ -627,10 +627,10 @@ public class LoadAndTrimPage extends JFrame {
 					weightSum += rearPaxRHWeightValue;
 					String rearPaxRHArm = rearRHPaxArmTxt.getText();
 					if (rearPaxRHWeight.isEmpty()) {
-						// TODO error dialogbox
 						throw new IllegalStateException("Rear RH pax Field left blank!");
 					} else {
-						rearPaxRHMoment = Double.parseDouble(rearPaxRHWeight) * Double.parseDouble(rearPaxRHArm);
+						rearPaxRHMoment = LoadAndTrimCalculations.getRearPaxRHMoment(
+								Double.parseDouble(rearPaxRHWeight), Double.parseDouble(rearPaxRHArm));
 						momentSum += rearPaxRHMoment;
 						rearRHPaxMomentTxt.setText(Double.toString(rearPaxRHMoment));
 					}
@@ -638,12 +638,12 @@ public class LoadAndTrimPage extends JFrame {
 					String baggageAreaWeight = baggageWeighttxt.getText();
 					baggageAreaWeightValue = Double.parseDouble(baggageAreaWeight);
 					weightSum += baggageAreaWeightValue;
-					String babbageAreaArm = baggageArmTxt.getText();
+					String baggageAreaArm = baggageArmTxt.getText();
 					if (baggageAreaWeight.isEmpty()) {
-						// TODO error dialogbox
 						throw new IllegalStateException("Baggage Area Field left blank!");
 					} else {
-						baggageAreaMoment = Double.parseDouble(baggageAreaWeight) * Double.parseDouble(babbageAreaArm);
+						baggageAreaMoment = LoadAndTrimCalculations.getBaggageAreaMoment(baggageAreaWeightValue,
+								Double.parseDouble(baggageAreaArm));
 						momentSum += baggageAreaMoment;
 						baggageMomentTxt.setText(Double.toString(baggageAreaMoment));
 					}
@@ -651,22 +651,29 @@ public class LoadAndTrimPage extends JFrame {
 					double totalRampWeight = weightSum;
 					sumOfAllWeightsTxt
 							.setText(Double.toString(LoadAndTrimCalculations.getFormattedValue(totalRampWeight)));
-					maxAllUpWeightTxt
-							.setText(Double.toString(LoadAndTrimCalculations.getFormattedValue(totalRampWeight - 1)));
+					maxAllUpWeightTxt.setText(Double.toString(LoadAndTrimCalculations
+							.getFormattedValue(LoadAndTrimCalculations.getMaxAllUpWeight(totalRampWeight))));
 					sumOfAllMomentsTxt.setText(Double.toString(LoadAndTrimCalculations.getFormattedValue(momentSum)));
-					maxAllUpMomentTxt
-							.setText(Double.toString(LoadAndTrimCalculations.getFormattedValue(momentSum - 241.0)));
-					double auwMoment = Double.parseDouble(maxAllUpMomentTxt.getText())
-							/ Double.parseDouble(maxAllUpWeightTxt.getText());
+					maxAllUpMomentTxt.setText(Double.toString(LoadAndTrimCalculations
+							.getFormattedValue(LoadAndTrimCalculations.getMaxAllUpMoment(momentSum))));
+					double auwMoment = LoadAndTrimCalculations.getAllUpMoment(
+							Double.parseDouble(maxAllUpMomentTxt.getText()),
+							Double.parseDouble(maxAllUpWeightTxt.getText()));
 					auwMoment = LoadAndTrimCalculations.getFormattedValue(auwMoment);
 					auwMomentTxt.setText(Double.toString(auwMoment));
 				} catch (IllegalStateException ise) {
-					// TODO: handle exception
 					ise.printStackTrace();
+				} catch (NumberFormatException nfe) {
+					JOptionPane.showMessageDialog(null, "Check all fields carefully!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					System.err.println("NumberFormatException occured!");
+					nfe.printStackTrace();
 				} catch (Exception e2) {
+					JOptionPane.showMessageDialog(null,
+							"Program encountered a FATAL INTERNAL ERROR. CONTACT SOFTWARE VENDOR!", "Error",
+							JOptionPane.ERROR_MESSAGE);
 					System.err.println("Something went wrong!");
 				}
-
 			}
 		});
 		calculateLoadAndTrimBtn.setFont(new Font("Dialog", Font.BOLD, 18));
