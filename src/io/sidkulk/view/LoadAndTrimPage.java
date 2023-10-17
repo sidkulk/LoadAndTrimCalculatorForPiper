@@ -530,6 +530,37 @@ public class LoadAndTrimPage extends JFrame {
 				}
 					break;
 
+				case "VT-CHY": {
+					Aircraft selectedAircraft = aircraftDatabase.get(aircraftList.getSelectedItem().toString());
+					acEmptyWeightTxt.setText(Double.toString(selectedAircraft.getEmptyWeight()));
+					acCgArmTxt.setText(Double.toString(selectedAircraft.getEmptyWeightCG()));
+					acMomentTxt.setText(LoadAndTrimCalculations.getAircraftWeightCGMoment(selectedAircraft));
+				}
+					break;
+
+				case "VT-CHX": {
+					Aircraft selectedAircraft = aircraftDatabase.get(aircraftList.getSelectedItem().toString());
+					acEmptyWeightTxt.setText(Double.toString(selectedAircraft.getEmptyWeight()));
+					acCgArmTxt.setText(Double.toString(selectedAircraft.getEmptyWeightCG()));
+					acMomentTxt.setText(LoadAndTrimCalculations.getAircraftWeightCGMoment(selectedAircraft));
+				}
+					break;
+
+				case "VT-CHT": {
+					Aircraft selectedAircraft = aircraftDatabase.get(aircraftList.getSelectedItem().toString());
+					acEmptyWeightTxt.setText(Double.toString(selectedAircraft.getEmptyWeight()));
+					acCgArmTxt.setText(Double.toString(selectedAircraft.getEmptyWeightCG()));
+					acMomentTxt.setText(LoadAndTrimCalculations.getAircraftWeightCGMoment(selectedAircraft));
+				}
+					break;
+
+				case "VT-CHS": {
+					Aircraft selectedAircraft = aircraftDatabase.get(aircraftList.getSelectedItem().toString());
+					acEmptyWeightTxt.setText(Double.toString(selectedAircraft.getEmptyWeight()));
+					acCgArmTxt.setText(Double.toString(selectedAircraft.getEmptyWeightCG()));
+					acMomentTxt.setText(LoadAndTrimCalculations.getAircraftWeightCGMoment(selectedAircraft));
+				}
+					break;
 				}
 			}
 		});
