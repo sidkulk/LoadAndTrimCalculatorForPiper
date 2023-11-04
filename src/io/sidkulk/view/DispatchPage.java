@@ -157,11 +157,11 @@ public class DispatchPage extends JFrame {
 		xwindCompTxt.setBounds(273, 325, 114, 34);
 		contentPane.add(xwindCompTxt);
 
-		JLabel lblNewLabel_1_3_3 = new JLabel("Headwind Comp");
-		lblNewLabel_1_3_3.setHorizontalAlignment(SwingConstants.LEFT);
-		lblNewLabel_1_3_3.setFont(new Font("JetBrains Mono", Font.BOLD, 20));
-		lblNewLabel_1_3_3.setBounds(60, 377, 203, 39);
-		contentPane.add(lblNewLabel_1_3_3);
+		JLabel headwindLabel = new JLabel("Headwind Comp");
+		headwindLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		headwindLabel.setFont(new Font("JetBrains Mono", Font.BOLD, 20));
+		headwindLabel.setBounds(60, 377, 203, 39);
+		contentPane.add(headwindLabel);
 
 		headWindCompTxt = new JTextField();
 		headWindCompTxt.setFont(new Font("JetBrains Mono", Font.BOLD, 20));
@@ -195,7 +195,10 @@ public class DispatchPage extends JFrame {
 				WindComponent windComponent = DispatchHelper.getWindComponent(windDirection, windSpeed,
 						runwayDirection * 10);
 
-
+				if(windComponent.getHeadWindComponent() < 0) {
+					windComponent.setHeadWindComponent(-1 * windComponent.getHeadWindComponent());
+					headwindLabel.setText("Tailwind Comp");
+				}
 				densityAltTxt.setText(Integer.toString(densityAltitude));
 				xwindCompTxt.setText(Double.toString(windComponent.getCrossWindComponent()));
 				headWindCompTxt.setText(Double.toString(windComponent.getHeadWindComponent()));

@@ -1,8 +1,13 @@
 package io.sidkulk.view.helper;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 import io.sidkulk.model.WindComponent;
 
 public class DispatchHelper {
+	private static BigDecimal bd;
+	
 	public static int getPressureAltitude(int elevation, int localQNH) {
 		int pressureAltitude = elevation + ((1013 - localQNH) * 30);
 		return pressureAltitude;
@@ -20,11 +25,15 @@ public class DispatchHelper {
 				: runwayDirection - windDirection;
 
 		angularDifference = Math.abs(angularDifference);
-		System.out.println("Cos(90) = " + Math.round(Math.cos(Math.toRadians(90))));
 
-		double crossWindComponent = windSpeed * Math.round(Math.sin(Math.toRadians(angularDifference)));
-		double headWindComponent = windSpeed * Math.round(Math.cos(Math.toRadians(angularDifference)));
+		double crossWindComponent = windSpeed * Math.sin(Math.toRadians(angularDifference));
+		double headWindComponent = windSpeed * Math.cos(Math.toRadians(angularDifference));
 
-		return new WindComponent(crossWindComponent, headWindComponent);
+		return new WindComponent(getFormattedValue(crossWindComponent), getFormattedValue(headWindComponent));
+	}
+	
+	public static double getFormattedValue(double value) {
+		bd = new BigDecimal(value).setScale(2, RoundingMode.HALF_UP);
+		return bd.doubleValue();
 	}
 }

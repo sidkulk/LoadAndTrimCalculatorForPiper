@@ -746,9 +746,9 @@ public class LoadAndTrimPage extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DispatchPage dispatchPage = new DispatchPage();
-				JOptionPane.showMessageDialog(null,
-						"DISPATCH PAGE IS STILL UNDER DEVELOPMENT. WIND COMPONENT VALUES MAY NOT BE ACCURATE!",
-						"WARNING", JOptionPane.WARNING_MESSAGE);
+//				JOptionPane.showMessageDialog(null,
+//						"DISPATCH PAGE IS STILL UNDER DEVELOPMENT. WIND COMPONENT VALUES MAY NOT BE ACCURATE!",
+//						"WARNING", JOptionPane.WARNING_MESSAGE);
 				dispatchPage.setVisible(true);
 			}
 		});

@@ -5,7 +5,7 @@ import io.sidkulk.view.helper.DispatchHelper;
 
 public class TestWindComponent {
 	public static void main(String[] args) {
-		int windDirection = 230;
+		int windDirection = 258;
 		int windSpeed = 04;
 		int runwayInUse = 32;
 		
