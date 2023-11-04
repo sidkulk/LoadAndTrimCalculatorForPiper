@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 import io.sidkulk.database.StaticDatabaseProvider;
+import io.sidkulk.exceptions.AllUpWeightOutOfLimitsException;
 import io.sidkulk.model.Aircraft;
 import io.sidkulk.view.helper.AircraftList;
 import io.sidkulk.view.helper.LoadAndTrimCalculations;
@@ -692,6 +693,9 @@ public class LoadAndTrimPage extends JFrame {
 							Double.parseDouble(maxAllUpWeightTxt.getText()));
 					auwMoment = LoadAndTrimCalculations.getFormattedValue(auwMoment);
 					auwMomentTxt.setText(Double.toString(auwMoment));
+					if (totalRampWeight > 1157) {
+						throw new AllUpWeightOutOfLimitsException("Load OUT OF LIMITS!!");
+					}
 				} catch (IllegalStateException ise) {
 					ise.printStackTrace();
 				} catch (NumberFormatException nfe) {
@@ -699,6 +703,10 @@ public class LoadAndTrimPage extends JFrame {
 							JOptionPane.ERROR_MESSAGE);
 					System.err.println("NumberFormatException occured!");
 					nfe.printStackTrace();
+				} catch (AllUpWeightOutOfLimitsException exe) {
+					JOptionPane.showMessageDialog(null, "ALL UP WEIGHT OUT OF LIMITS!!!!", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					System.err.println("NumberFormatException occured!");
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null,
 							"Program encountered a FATAL INTERNAL ERROR. CONTACT SOFTWARE VENDOR!", "Error",
@@ -738,6 +746,9 @@ public class LoadAndTrimPage extends JFrame {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DispatchPage dispatchPage = new DispatchPage();
+				JOptionPane.showMessageDialog(null,
+						"DISPATCH PAGE IS STILL UNDER DEVELOPMENT. WIND COMPONENT VALUES MAY NOT BE ACCURATE!",
+						"WARNING", JOptionPane.WARNING_MESSAGE);
 				dispatchPage.setVisible(true);
 			}
 		});
